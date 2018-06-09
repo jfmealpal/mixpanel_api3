@@ -28,15 +28,15 @@ if __name__ == '__main__':
 	latest_version = result['version_id']
 	
 	# print the version id you are using in case you want it in future
-	print latest_version
+	print(latest_version)
 
 	# You can then import events by specifying a file that is JSON formatted with an array of Mixpanel events or a CSV of Mixpanel events
 	# see HERE for more information on Mixpanel event objects
 	m.import_events(event_import_file, timezone_offset=0, dataset_version=latest_version)
-	print 'done importing'
+	print('done importing')
 
 	m.mark_dataset_version_readable(latest_version)
 	# let's wait until this version is ready now
 	m.wait_until_dataset_version_ready(latest_version)
-	print 'dataset version is ready'
+	print('dataset version is ready')
 

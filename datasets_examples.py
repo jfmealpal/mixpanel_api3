@@ -58,7 +58,7 @@ if __name__ == '__main__':
 	# you may also create a new dataset version if you wish, this will return the current state of the new version
 	new_version = m.create_dataset_version()
 	if 'error' in new_version:
-		print 'seems there was an error creating this dataset version %s' %(new_version['error'])
+		print('seems there was an error creating this dataset version %s' %(new_version['error']))
 	else:
 		latest_version_id = new_version['version_id']
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
 
 	# let's wait until this version is ready now
 	m.wait_until_dataset_version_ready(latest_version_id)
-	print 'dataset version ready hit enter to delete the dataset version'
-	raw_input()
+	print('dataset version ready hit enter to delete the dataset version')
+	input()
 	# You may also delete a specific dataset version as well
 	m.delete_dataset_version(latest_version_id)
