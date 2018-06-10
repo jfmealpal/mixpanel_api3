@@ -1,3 +1,12 @@
+### Motivation and Credit
+This is a python 3 port of the original mixpanel-api (python2) utility by the MixPanel Team.
+It was done as a quick weekend hack to integrate with some other python 3 code that I was using
+As such I've not added any additional tests/made significant changes and have tested only the portion that I was using
+Would welcome MixPanel team to take ownership or have other contributors enhance this library
+
+Feedback/Suggestions/Pull Requests welcome
+Original Readme below with minimal modifications.
+
 # Mixpanel-api Module
 
 ### Table of Contents
@@ -48,7 +57,7 @@ Please note: At the moment this module supports Python 2 only. Python 3 is not s
 You may install the mixpanel-api module via pip:
 
 ```
-pip install mixpanel-api 
+pip install mixpanel-api3
 ```
 
 #### Usage
