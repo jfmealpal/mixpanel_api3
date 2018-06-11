@@ -3,11 +3,11 @@ from distutils.core import setup
 setup(
   name='mixpanel-api3',
   packages=['mixpanel_api'],
-  version='0.1',
+  version='0.2',
   description='Python3 Version of mixpanel-api. A utilities-only module for exporting and importing data into Mixpanel via their APIs. This is NOT for server-side app tracking.',
   long_description='Python3 Version of mixpanel-api. A utilities-only module for exporting and importing data into Mixpanel via their APIs. This is NOT for server-side app tracking.',
   author='Avinash Anand',
-  author_email='avinash.anand+pypi@gmail.com',
+  author_email='asy8uo81p3g4@abinemail.com',
   url='https://github.com/aavnsh/mixpanel_api3',
   keywords=['mixpanel', 'utilities', 'python3'],
   classifiers=[
