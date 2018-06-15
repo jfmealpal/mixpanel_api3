@@ -3,7 +3,7 @@ from distutils.core import setup
 setup(
   name='mixpanel-api3',
   packages=['mixpanel_api'],
-  version='0.2',
+  version='0.2.1',
   description='Python3 Version of mixpanel-api. A utilities-only module for exporting and importing data into Mixpanel via their APIs. This is NOT for server-side app tracking.',
   long_description='Python3 Version of mixpanel-api. A utilities-only module for exporting and importing data into Mixpanel via their APIs. This is NOT for server-side app tracking.',
   author='Avinash Anand',
