@@ -195,13 +195,17 @@ class Mixpanel(object):
                     data += '&verbose=1'
                     # Uncomment the line below to log the request body data
                     # Mixpanel.LOGGER.debug(method + ' data: ' + data)
+                if isinstance(data, str):
+                    data = data.encode()
+                    # Uncomment the line below to log the request body data
+                    # Mixpanel.LOGGER.debug(data)
             Mixpanel.LOGGER.debug("Request Method: " + method)
             Mixpanel.LOGGER.debug("Request URL: " + request_url)
 
             if headers is None:
                 headers = {}
             headers['Authorization'] = 'Basic {encoded_secret}'.format(
-                encoded_secret=base64.b64encode(self.api_secret + ':'))
+                encoded_secret=base64.b64encode((self.api_secret + ':').encode()).decode())
             request = urllib.request.Request(request_url, data, headers)
             Mixpanel.LOGGER.debug("Request Headers: " + json.dumps(headers))
             # This is the only way to use HTTP methods other than GET or POST with urllib2
@@ -210,14 +214,16 @@ class Mixpanel(object):
 
             try:
                 response = urllib.request.urlopen(request, timeout=self.timeout)
+                Mixpanel.LOGGER.debug('response')
+                Mixpanel.LOGGER.debug(response)
                 if raw_stream and base_url == Mixpanel.RAW_API:
                     return response
             except urllib.error.HTTPError as e:
                 Mixpanel.LOGGER.warning('The server couldn\'t fulfill the request.')
-                Mixpanel.LOGGER.warning('Error code: ' + str(e.code))
-                Mixpanel.LOGGER.warning('Reason: ' + str(e.reason))
+                Mixpanel.LOGGER.warning('Error code: {}'.format(e.code))
+                Mixpanel.LOGGER.warning('Reason: {}'.format(e.reason))
                 if hasattr(e, 'read'):
-                    Mixpanel.LOGGER.warning('Response: ' + e.read())
+                    Mixpanel.LOGGER.warning('Response: {}'.format(e.read()))
                 if e.code >= 500:
                     # Retry if we get an HTTP 5xx error
                     Mixpanel.LOGGER.warning("Attempting retry #" + str(retries + 1))
@@ -225,9 +231,9 @@ class Mixpanel(object):
                                  raw_stream=raw_stream, retries=retries + 1)
             except urllib.error.URLError as e:
                 Mixpanel.LOGGER.warning('We failed to reach a server.')
-                Mixpanel.LOGGER.warning('Reason: ' + str(e.reason))
+                Mixpanel.LOGGER.warning('Reason: {}'.format(str(e.reason)))
                 if hasattr(e, 'read'):
-                    Mixpanel.LOGGER.warning('Response: ' + e.read())
+                    Mixpanel.LOGGER.warning('Response: {}'.format(e.read()))
                 Mixpanel.LOGGER.warning("Attempting retry #" + str(retries + 1))
                 self.request(base_url, path_components, params, method=method, headers=headers, raw_stream=raw_stream,
                              retries=retries + 1)
@@ -251,7 +257,7 @@ class Mixpanel(object):
                         response_data = f.read()
                     else:
                         response_data = response.read()
-                    return response_data
+                    return response_data.decode()
                 except IncompleteRead as e:
                     Mixpanel.LOGGER.warning("Response data is incomplete. Attempting retry #" + str(retries + 1))
                     self.request(base_url, path_components, params, method=method, headers=headers,
@@ -1712,7 +1718,7 @@ class Mixpanel(object):
 
         """
         try:
-            params = {'data': base64.b64encode(json.dumps(batch))}
+            params = {'data': base64.b64encode(json.dumps(batch).encode()).decode()}
             if dataset_id:
                 params['dataset_id'] = dataset_id
                 params['token'] = self.token
@@ -1722,7 +1728,9 @@ class Mixpanel(object):
             msg = "Sent " + str(len(batch)) + " items on " + time.strftime("%Y-%m-%d %H:%M:%S") + "!"
             Mixpanel.LOGGER.debug(msg)
             return response
-        except BaseException:
+        except BaseException as be:
+            Mixpanel.LOGGER.debug('Exception in _send_batch')
+            Mixpanel.LOGGER.debug(be)
             Mixpanel.LOGGER.warning("Failed to import batch, dumping to file import_backup.txt")
             with open('import_backup.txt', 'a+') as backup:
                 json.dump(batch, backup)
