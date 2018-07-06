@@ -59,6 +59,11 @@ You may install the mixpanel-api module via pip:
 ```
 pip install mixpanel-api3
 ```
+Note: If you already have the Python2 mixpanel-api installed, you must unstall it before you can install the Python3 version.
+
+```
+pip uninstall mixpanel-api
+```
 
 #### Usage
 
